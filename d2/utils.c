@@ -34,8 +34,8 @@ int parseString(char * filename, int * array[]){
     while(ptr != NULL){
         str =  malloc(strlen(ptr)+1*sizeof(char));
         strcpy(str, ptr);
-        printf("%s\n", str);
-        *array[i] = atoi(str);
+        //le (*array) doit etre entre parenthèse car sinon celà cause un soucis d'ambiguité pour le compilo
+        (*array)[i] = atoi(str);
         ptr = strtok(NULL, ",");
         i++;
         free(str);
