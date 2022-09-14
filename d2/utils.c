@@ -46,3 +46,33 @@ int parseString(char * filename, int * array[]){
     return nbE;
 }
 
+int  copyFile(int* datas[], int* src, int nbE){
+    for (int i=0; i<nbE; i++){
+        (*datas)[i] = src[i];
+    }
+
+    return 0;
+}
+
+int process(int intcode[]){
+    int j;
+    j=0;
+    while(intcode[j] != 99){
+        switch(intcode[j]){
+            case 1:
+                //printf("adding %d and %d result %d, stored at %d \n", intcode[intcode[j+1]], intcode[intcode[j+2]], intcode[intcode[j+1]]+intcode[intcode[j+2]], intcode[intcode[j+3]]);
+                intcode[intcode[j+3]] = intcode[intcode[j+1]] + intcode[intcode[j+2]];
+                break;
+            case 2:
+                //printf("multiply %d and %d result %d, stored at %d \n", intcode[intcode[j+1]], intcode[intcode[j+2]], intcode[intcode[j+1]]*intcode[intcode[j+2]], intcode[intcode[j+3]]);
+                intcode[intcode[j+3]] = intcode[intcode[j+1]] * intcode[intcode[j+2]];
+                break;
+            default:
+                printf("SA MARCH PA \n");
+                return -1;
+                break;
+        }
+        j+=4;
+    }
+    return (intcode[0]);
+}

@@ -3,42 +3,48 @@
 #include <math.h>
 
 int parseString(char * filename, int ** array);
+int  copyFile(int* datas[], int* src, int nbE);
+int process(int intcode[]);
 
 int main(int argc, char** argv) {
     int* intcode;
+    int * temp;
     int nbInt;
-    int j;
+    int i,j;
+    int test;
+    int found =0;
+    int valueExpected = 19690720;
+    int valueFound;
 
     nbInt = parseString("./input.txt", &intcode);
     if(nbInt == -1){
         exit(EXIT_FAILURE);
     }
-    
-    // for(int i =0; i < nbInt; i++){
-    //     printf("%d\n", intcode[i]);
-    // }
+    temp = malloc(nbInt*sizeof(int));
 
-
-    j=0;
-    while(intcode[j] != 99){
-        switch(intcode[j]){
-            case 1:
-                printf("adding %d and %d result %d, stored at %d \n", intcode[intcode[j+1]], intcode[intcode[j+2]], intcode[intcode[j+1]]+intcode[intcode[j+2]], intcode[intcode[j+3]]);
-                intcode[intcode[j+3]] = intcode[intcode[j+1]] + intcode[intcode[j+2]];
-                break;
-            case 2:
-                printf("multiply %d and %d result %d, stored at %d \n", intcode[intcode[j+1]], intcode[intcode[j+2]], intcode[intcode[j+1]]*intcode[intcode[j+2]], intcode[intcode[j+3]]);
-                intcode[intcode[j+3]] = intcode[intcode[j+1]] * intcode[intcode[j+2]];
-                break;
-            default:
-                printf("SA MARCH PA \n");
-                break;
+    while(i < 99 && !found){
+        j=0;
+        while(j<99 && !found){
+            printf("trying combination %d, %d...", i,j);
+            test = copyFile(&temp, intcode, nbInt);
+            if(test == -1){
+                exit (EXIT_FAILURE);
+            }
+            temp[1] = i;
+            temp[2] = j;
+            valueFound = process(temp);
+            if(valueFound == valueExpected){
+                found =1;
+                printf("value found! code: %d\n", 100*i+j);
+            }
+            j++;
+            printf(" value %d NOK\n", valueFound);
         }
-        j+=4;
+        i++;
     }
-    printf("%d\n", intcode[0]);
+   
     
-    
+    free (temp);
     free(intcode);
     return 0;
 }
